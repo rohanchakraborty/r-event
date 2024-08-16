@@ -1,14 +1,14 @@
 # main.py
+
 from connectors.jsonplaceholder_connector import JSONPlaceholderConnector
-from connectors.openweather_connector import OpenWeatherConnector
+from connectors.mealdb_connector import MealDBConnector
 from transformation.api_transformer import APITransformer
 from storage.sql_storage import SQLStorage
-
 
 def main():
     # Initialize components
     json_connector = JSONPlaceholderConnector()
-    weather_connector = OpenWeatherConnector(api_key='YOUR_OPENWEATHER_API_KEY')
+    mealdb_connector = MealDBConnector()
     transformer = APITransformer()
     storage = SQLStorage()
 
@@ -21,10 +21,10 @@ def main():
     for item in transformed_json:
         storage.insert_post(item['title'], item['body'])
 
-    # Fetch and store OpenWeather data
-    weather_data = weather_connector.fetch_data()
-    transformed_weather = transformer.transform(weather_data, source="openweather")
-    storage.insert_weather(transformed_weather['city'], transformed_weather['temperature'], transformed_weather['weather'])
+    # Fetch and store MealDB data
+    meal_data = mealdb_connector.fetch_data()
+    transformed_meal = transformer.transform(meal_data, source="mealdb")
+    storage.insert_meal(transformed_meal['meal_name'], transformed_meal['category'], transformed_meal['area'], transformed_meal['instructions'])
 
     # Close storage connection
     storage.close()

@@ -16,11 +16,12 @@ class SQLStorage:
             )
         ''')
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS weather (
+            CREATE TABLE IF NOT EXISTS meals (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                city TEXT NOT NULL,
-                temperature REAL NOT NULL,
-                weather TEXT NOT NULL
+                meal_name TEXT NOT NULL,
+                category TEXT NOT NULL,
+                area TEXT NOT NULL,
+                instructions TEXT NOT NULL
             )
         ''')
         self.connection.commit()
@@ -29,8 +30,8 @@ class SQLStorage:
         self.cursor.execute('INSERT INTO posts (title, body) VALUES (?, ?)', (title, body))
         self.connection.commit()
 
-    def insert_weather(self, city, temperature, weather):
-        self.cursor.execute('INSERT INTO weather (city, temperature, weather) VALUES (?, ?, ?)', (city, temperature, weather))
+    def insert_meal(self, meal_name, category, area, instructions):
+        self.cursor.execute('INSERT INTO meals (meal_name, category, area, instructions) VALUES (?, ?, ?, ?)', (meal_name, category, area, instructions))
         self.connection.commit()
 
     def close(self):
